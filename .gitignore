@@ -1,3 +1,4 @@
 /.project
 /.pydevproject
 /ieo_afpfapfap.egg-info/
+__pycache__/
