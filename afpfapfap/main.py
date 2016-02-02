@@ -11,15 +11,22 @@ import logging
 import pathlib
 
 
-def sanitize(entry):
+def sanitize(entry, suffix=''):
 
     # strip white spaces
     if entry.is_dir() and entry.name.strip() != entry.name:
 
         sanitized_path = os.path.join(os.path.dirname(entry.path),
-                                      entry.name.strip())
+                                      entry.name.strip() + suffix)
 
-        os.rename(entry.path, sanitized_path)
+        try:
+            os.rename(entry.path, sanitized_path)
+        except OSError as e:
+            # dir not empty
+            if e.errno is 39:
+                sanitize(entry, suffix + '_')
+            else:
+                raise OSError(e)
         logging.debug('stripped dir: "%s" -> "%s"',
                       entry.path, sanitized_path)
         entry = pathlib.Path(sanitized_path)

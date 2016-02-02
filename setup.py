@@ -4,15 +4,15 @@ from setuptools import setup
 # allow setup.py to be run from any path
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
-install_requires = [
-]
+install_requires = ['stevedore',
+                    ]
 
 dependency_links = [
     'git+https://github.com/pexpect/pexpect@671417beb41c21f772687c565196fdde444b053b#egg=pexpect-3.3',
 ]
 
 if os.environ.get('DEBUG'):
-    install_requires += ['ipython',
+    install_requires += ['ipython==4.0.3',
                          'coverage==3.7.1',
                          ]
 
@@ -80,6 +80,10 @@ setup(
     ],
 
     entry_points={
-        'console_scripts': ['main = afpfapfap.main:run']
+        'console_scripts': ['main = afpfapfap.main:run'],
+        'fapfap.cleaners': [
+            'whitespace trimmer = afpfapfap.plugins.renames:spacestrip',
+        ],
+
     },
 )

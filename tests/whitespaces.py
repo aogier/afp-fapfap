@@ -17,6 +17,7 @@ class TestWhitespace(unittest.TestCase):
     def setUp(self):
         super().setUp()
         self.tempdir = mkdtemp()
+        self.path = Path(self.tempdir)
 
     def tearDown(self):
         super().tearDown()
@@ -49,3 +50,30 @@ class TestWhitespace(unittest.TestCase):
             os.path.exists(normalized_path),
             'trailing space not removed: %s' % [x.path for x
                                                 in os.scandir(self.tempdir)])
+
+    def testDoubleLeadingWhitespaceRemovalOnEmptyDir(self):
+
+        for d in [' dir', '  dir']:
+            os.mkdir(os.path.join(self.tempdir, d))
+
+        for _entry in scandirs(self.path):
+            pass
+
+        self.assertEqual(1,
+                         len(list(self.path.iterdir())),
+                         'no')
+
+    def testDoubleLeadingWhitespaceRemoval(self):
+
+        os.mkdir(os.path.join(self.tempdir, ' dir'))
+        os.mkdir(os.path.join(self.tempdir, '  dir'))
+
+        open(os.path.join(self.tempdir, ' dir', 'file'), 'w').close()
+        open(os.path.join(self.tempdir, '  dir', 'file'), 'w').close()
+
+        for _entry in scandirs(self.path):
+            pass
+
+        self.assertEqual(2,
+                         len(list(self.path.iterdir())),
+                         'no')
