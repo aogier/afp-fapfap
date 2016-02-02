@@ -82,8 +82,10 @@ setup(
     entry_points={
         'console_scripts': ['main = afpfapfap.main:run'],
         'fapfap.cleaners': [
-            'whitespace trimmer = afpfapfap.plugins.renames:spacestrip',
+            'whitespace trimmer = afpfapfap.plugins.renames:WhitespaceRemover',
         ],
 
     },
+
+    zip_safe=False,
 )

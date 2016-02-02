@@ -9,40 +9,32 @@ import os
 import argparse
 import logging
 import pathlib
-
-
-def sanitize(entry, suffix=''):
-
-    # strip white spaces
-    if entry.is_dir() and entry.name.strip() != entry.name:
-
-        sanitized_path = os.path.join(os.path.dirname(entry.path),
-                                      entry.name.strip() + suffix)
-
-        try:
-            os.rename(entry.path, sanitized_path)
-        except OSError as e:
-            # dir not empty
-            if e.errno is 39:
-                sanitize(entry, suffix + '_')
-            else:
-                raise OSError(e)
-        logging.debug('stripped dir: "%s" -> "%s"',
-                      entry.path, sanitized_path)
-        entry = pathlib.Path(sanitized_path)
-
-    return entry
+from stevedore.extension import ExtensionManager
 
 
 class NukedFile(Exception):
     pass
 
 
+def cane():
+    a = 0 / 0
+
+
 def scandirs(path):
     try:
         for entry in path.iterdir():
             try:
-                entry = sanitize(entry)
+                #                 entry = sanitize(entry)
+
+                # cleaners step
+
+                cleaners = ExtensionManager('fapfap.cleaners',
+                                            propagate_map_exceptions=True,
+                                            on_load_failure_callback=cane,
+                                            invoke_on_load=True)
+
+                cleaners.map_method('sanitize', entry)
+
             except NukedFile:
                 continue
             if entry.is_dir():

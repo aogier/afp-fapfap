@@ -63,17 +63,58 @@ class TestWhitespace(unittest.TestCase):
                          len(list(self.path.iterdir())),
                          'no')
 
-    def testDoubleLeadingWhitespaceRemoval(self):
+    def testDoubleTrailingWhitespaceRemovalOnEmptyDir(self):
 
-        os.mkdir(os.path.join(self.tempdir, ' dir'))
-        os.mkdir(os.path.join(self.tempdir, '  dir'))
-
-        open(os.path.join(self.tempdir, ' dir', 'file'), 'w').close()
-        open(os.path.join(self.tempdir, '  dir', 'file'), 'w').close()
+        for d in ['dir ', 'dir  ']:
+            os.mkdir(os.path.join(self.tempdir, d))
 
         for _entry in scandirs(self.path):
             pass
 
-        self.assertEqual(2,
+        self.assertEqual(1,
                          len(list(self.path.iterdir())),
+                         'no')
+
+    def testMultipleLeadingWhitespaceRemoval(self):
+
+        os.mkdir(os.path.join(self.tempdir, ' dir'))
+        os.mkdir(os.path.join(self.tempdir, '  dir'))
+        os.mkdir(os.path.join(self.tempdir, '   dir'))
+
+        open(os.path.join(self.tempdir, ' dir', 'file'), 'w').close()
+        open(os.path.join(self.tempdir, '  dir', 'file'), 'w').close()
+        open(os.path.join(self.tempdir, '   dir', 'file'), 'w').close()
+
+        for _entry in scandirs(self.path):
+            pass
+
+        self.assertEqual(3,
+                         len(list(self.path.iterdir())),
+                         'no')
+
+        self.assertEqual([x.path for x in self.path.iterdir()],
+                         [os.path.join(self.tempdir, x)
+                          for x in ['dir', 'dir_', 'dir__']],
+                         'no')
+
+    def testMultipleTrailingWhitespaceRemoval(self):
+
+        os.mkdir(os.path.join(self.tempdir, 'dir '))
+        os.mkdir(os.path.join(self.tempdir, 'dir  '))
+        os.mkdir(os.path.join(self.tempdir, 'dir   '))
+
+        open(os.path.join(self.tempdir, 'dir ', 'file'), 'w').close()
+        open(os.path.join(self.tempdir, 'dir  ', 'file'), 'w').close()
+        open(os.path.join(self.tempdir, 'dir   ', 'file'), 'w').close()
+
+        for _entry in scandirs(self.path):
+            pass
+
+        self.assertEqual(3,
+                         len(list(self.path.iterdir())),
+                         'no')
+
+        self.assertEqual([x.path for x in self.path.iterdir()],
+                         [os.path.join(self.tempdir, x)
+                          for x in ['dir', 'dir_', 'dir__']],
                          'no')
