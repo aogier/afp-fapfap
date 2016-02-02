@@ -92,9 +92,9 @@ class TestWhitespace(unittest.TestCase):
                          len(list(self.path.iterdir())),
                          'no')
 
-        self.assertEqual([x.path for x in self.path.iterdir()],
-                         [os.path.join(self.tempdir, x)
-                          for x in ['dir', 'dir_', 'dir__']],
+        self.assertEqual(set(x.path for x in self.path.iterdir()),
+                         set(os.path.join(self.tempdir, x)
+                          for x in ['dir', 'dir_', 'dir__']),
                          'no')
 
     def testMultipleTrailingWhitespaceRemoval(self):
@@ -114,7 +114,7 @@ class TestWhitespace(unittest.TestCase):
                          len(list(self.path.iterdir())),
                          'no')
 
-        self.assertEqual([x.path for x in self.path.iterdir()],
-                         [os.path.join(self.tempdir, x)
-                          for x in ['dir', 'dir_', 'dir__']],
+        self.assertEqual(set(x.path for x in self.path.iterdir()),
+                         set(os.path.join(self.tempdir, x)
+                          for x in ['dir', 'dir_', 'dir__']),
                          'no')
