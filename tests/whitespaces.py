@@ -3,13 +3,14 @@ Created on 28/gen/2016
 
 @author: oggei
 '''
-import unittest
-from pkg_resources import Requirement, resource_filename  # @UnresolvedImport
-from tempfile import mkdtemp
-import os
-import shutil
 from afpfapfap.main import scandirs
+import os
 from pathlib import Path
+import shutil
+from tempfile import mkdtemp
+import unittest
+
+from pkg_resources import Requirement, resource_filename  # @UnresolvedImport
 
 
 class TestWhitespace(unittest.TestCase):
@@ -94,7 +95,7 @@ class TestWhitespace(unittest.TestCase):
 
         self.assertEqual(set(x.path for x in self.path.iterdir()),
                          set(os.path.join(self.tempdir, x)
-                          for x in ['dir', 'dir_', 'dir__']),
+                             for x in ['dir', 'dir_', 'dir__']),
                          'no')
 
     def testMultipleTrailingWhitespaceRemoval(self):
@@ -116,5 +117,5 @@ class TestWhitespace(unittest.TestCase):
 
         self.assertEqual(set(x.path for x in self.path.iterdir()),
                          set(os.path.join(self.tempdir, x)
-                          for x in ['dir', 'dir_', 'dir__']),
+                             for x in ['dir', 'dir_', 'dir__']),
                          'no')
