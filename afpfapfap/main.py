@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 '''
 Created on 28/gen/2016
 
@@ -19,27 +20,22 @@ class NukedFile(Exception):
 def cane():
     a = 0 / 0
 
+cleaners = ExtensionManager('fapfap.cleaners',
+                            propagate_map_exceptions=True,
+                            on_load_failure_callback=cane,
+                            invoke_on_load=True)
 
-def scandirs(path):
+
+def clean_dir(path, execute=False):
     try:
         for entry in path.iterdir():
-            try:
-                #                 entry = sanitize(entry)
-
-                # cleaners step
-
-                cleaners = ExtensionManager('fapfap.cleaners',
-                                            propagate_map_exceptions=True,
-                                            on_load_failure_callback=cane,
-                                            invoke_on_load=True)
-
-                cleaners.map_method('sanitize', entry)
-
-            except NukedFile:
-                continue
             if entry.is_dir():
-                yield from scandirs(entry)
-            yield entry
+                print ('recurse into %s' % entry)
+                clean_dir(entry, execute)
+
+            for cleaner in cleaners:
+                cleaner.obj.sanitize(entry, execute=execute)
+
     except PermissionError as e:
         print('perm error:', e)
 
@@ -56,7 +52,11 @@ def run():
 
     root_path = pathlib.Path(args.path)
 
-    for entry in scandirs(root_path):
+    for entry in clean_dir(root_path, execute=args['execute']):
         print(entry.path)
 
     print(args)
+
+
+if __name__ == '__main__':
+    run()

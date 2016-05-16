@@ -8,26 +8,76 @@ import logging
 import pathlib
 
 
+ADDED_SUFFIX = '_'
+
+
 class WhitespaceRemover(object):
 
-    def sanitize(self, entry, suffix=''):
+    log_sanitized = 'stripped dir: "{0.name}" -> "{1.name}"'
 
-        # strip white spaces
-        if entry.is_dir() and entry.name.strip() != entry.name:
+    def sanitize(self, entry, suffix='', execute=False):
 
-            sanitized_path = os.path.join(os.path.dirname(entry.path),
-                                          entry.name.strip() + suffix)
+        stripped = entry.name.strip()
 
-            try:
-                os.rename(entry.path, sanitized_path)
-            except OSError as e:
-                # dir not empty
-                if e.errno is 39:
-                    self.sanitize(entry, suffix + '_')
+        if stripped != entry.name:
+
+            sanitized_path = entry.parent.joinpath(stripped + suffix)
+
+#             if sanitized_path.exists():
+#                 self.sanitize(entry, suffix + ADDED_SUFFIX, execute)
+
+            log = self.log_sanitized
+            if not execute:
+                log = 'DRY RUN: %s' % log
+            else:
+
+                if (entry.is_symlink()
+                        or entry.is_socket()
+                        or entry.is_fifo()
+                        or entry.is_block_device()
+                        or entry.is_char_device()):
+                    logging.warn('special file {0.path} skipped'.format(entry))
+                    return entry
+
+                # directory rename
+                elif entry.is_dir():
+
+                    try:
+                        # do the actual rename
+                        entry.rename(sanitized_path)
+                    except OSError as e:
+                        # race condition: we tried to rename to an already
+                        # existing, non-empty directory
+                        if e.errno is 39:
+                            # retry with a different suffix
+                            self.sanitize(entry,
+                                          suffix + ADDED_SUFFIX, execute)
+                        else:
+                            raise OSError(e)
+
+                elif entry.is_file():
+
+                    try:
+                        # link is atomic and fails if target already exists
+                        os.link(entry.path, sanitized_path.path)
+                    except FileExistsError as e:
+                        # race condition: we tried to create an already
+                        # existing dir/file
+                        if e.errno is 17:
+                            # retry with a different suffix
+                            self.sanitize(entry,
+                                          suffix + ADDED_SUFFIX, execute)
+                        else:
+                            raise OSError(e)
+
+                    # safely remove entry
+                    entry.unlink()
+
+                # rtfm ?
                 else:
-                    raise OSError(e)
-            logging.debug('stripped dir: "%s" -> "%s"',
-                          entry.path, sanitized_path)
-            entry = pathlib.Path(sanitized_path)
+                    logging.critical(
+                        'File {0.path} is neither a special nor a dir/file !'.format(entry))
 
-        return entry
+            logging.warn(log.format(entry, sanitized_path))
+
+            return sanitized_path
