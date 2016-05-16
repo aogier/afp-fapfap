@@ -57,14 +57,15 @@ class TestIdempotency(unittest.TestCase):
 
     def testIdempotency(self):
         a = set(x for x
-                in self.populate(self.tempdir, depth=1, width=1))
+                in self.populate(self.tempdir, depth=3, width=3))
 
         clean_dir(self.path, execute=True)
-
         b = set(x.path for x
                 in self.path.iterdir())
 
+        clean_dir(self.path, execute=True)
         c = set(x.path for x
                 in self.path.iterdir())
 
+        self.assertNotEqual(a, b, 'no')
         self.assertEqual(b, c, 'no')
