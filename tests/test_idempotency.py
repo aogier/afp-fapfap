@@ -57,7 +57,9 @@ class TestIdempotency(unittest.TestCase):
 
     def testIdempotency(self):
         a = set(x for x
-                in self.populate(self.tempdir, depth=2, width=2))
+                in self.populate(self.tempdir, depth=1, width=1))
+
+        clean_dir(self.path, execute=True)
 
         b = set(x.path for x
                 in self.path.iterdir())
@@ -66,5 +68,3 @@ class TestIdempotency(unittest.TestCase):
                 in self.path.iterdir())
 
         self.assertEqual(b, c, 'no')
-
-        print('\n\ncane\n')

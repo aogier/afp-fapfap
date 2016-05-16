@@ -13,7 +13,7 @@ ADDED_SUFFIX = '_'
 
 class WhitespaceRemover(object):
 
-    log_sanitized = 'stripped dir: "{0.name}" -> "{1.name}"'
+    log_sanitized = 'stripped {2}: \n"{0.path}"\n"{1.path}"'
 
     def sanitize(self, entry, suffix='', execute=False):
 
@@ -22,9 +22,6 @@ class WhitespaceRemover(object):
         if stripped != entry.name:
 
             sanitized_path = entry.parent.joinpath(stripped + suffix)
-
-#             if sanitized_path.exists():
-#                 self.sanitize(entry, suffix + ADDED_SUFFIX, execute)
 
             log = self.log_sanitized
             if not execute:
@@ -41,6 +38,7 @@ class WhitespaceRemover(object):
 
                 # directory rename
                 elif entry.is_dir():
+                    what = 'dir'
 
                     try:
                         # do the actual rename
@@ -56,6 +54,7 @@ class WhitespaceRemover(object):
                             raise OSError(e)
 
                 elif entry.is_file():
+                    what = 'file'
 
                     try:
                         # link is atomic and fails if target already exists
@@ -78,6 +77,6 @@ class WhitespaceRemover(object):
                     logging.critical(
                         'File {0.path} is neither a special nor a dir/file !'.format(entry))
 
-            logging.warn(log.format(entry, sanitized_path))
+            logging.warning(log.format(entry, sanitized_path, what))
 
             return sanitized_path

@@ -27,10 +27,11 @@ cleaners = ExtensionManager('fapfap.cleaners',
 
 
 def clean_dir(path, execute=False):
+    logging.warning('Entering dir: %s', path)
     try:
         for entry in path.iterdir():
             if entry.is_dir():
-                print ('recurse into %s' % entry)
+                logging.warning('Recurse into: %s', entry)
                 clean_dir(entry, execute)
 
             for cleaner in cleaners:
