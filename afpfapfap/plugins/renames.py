@@ -49,7 +49,7 @@ class WhitespaceRemover(object):
                         if e.errno is 39:
                             # retry with a different suffix
                             return self.sanitize(entry,
-                                          suffix + ADDED_SUFFIX, execute)
+                                                 suffix + ADDED_SUFFIX, execute)
                         else:
                             raise OSError(e)
 
@@ -65,7 +65,7 @@ class WhitespaceRemover(object):
                         if e.errno is 17:
                             # retry with a different suffix
                             return self.sanitize(entry,
-                                          suffix + ADDED_SUFFIX, execute)
+                                                 suffix + ADDED_SUFFIX, execute)
                         else:
                             raise OSError(e)
 
