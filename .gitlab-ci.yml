@@ -1,0 +1,10 @@
+test:
+  variables:
+    DEBUG: 1
+  script:
+    - virtualenv -p /usr/bin/python3.5 venv
+    - . venv/bin/activate
+    - python setup.py develop
+    - coverage python -m unittest
+    - coverage report
+    
