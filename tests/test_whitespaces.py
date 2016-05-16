@@ -20,7 +20,6 @@ class TestWhitespace(unittest.TestCase):
         self.path = Path(self.tempdir)
 
     def tearDown(self):
-        print('CANENE')
         super().tearDown()
         shutil.rmtree(self.tempdir)
 
