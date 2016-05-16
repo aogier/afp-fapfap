@@ -9,7 +9,7 @@ import shutil
 from tempfile import mkdtemp, mkstemp
 import unittest
 from random import random
-from afpfapfap.main import scandirs
+from afpfapfap.main import clean_dir
 
 
 class TestIdempotency(unittest.TestCase):
@@ -60,10 +60,10 @@ class TestIdempotency(unittest.TestCase):
                 in self.populate(self.tempdir, depth=2, width=2))
 
         b = set(x.path for x
-                in scandirs(self.path))
+                in self.path.iterdir())
 
         c = set(x.path for x
-                in scandirs(self.path))
+                in self.path.iterdir())
 
         self.assertEqual(b, c, 'no')
 
