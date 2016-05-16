@@ -48,7 +48,7 @@ class WhitespaceRemover(object):
                         # existing, non-empty directory
                         if e.errno is 39:
                             # retry with a different suffix
-                            self.sanitize(entry,
+                            return self.sanitize(entry,
                                           suffix + ADDED_SUFFIX, execute)
                         else:
                             raise OSError(e)
@@ -64,7 +64,7 @@ class WhitespaceRemover(object):
                         # existing dir/file
                         if e.errno is 17:
                             # retry with a different suffix
-                            self.sanitize(entry,
+                            return self.sanitize(entry,
                                           suffix + ADDED_SUFFIX, execute)
                         else:
                             raise OSError(e)
