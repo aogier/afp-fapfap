@@ -5,6 +5,6 @@ test:
     - virtualenv -p /usr/bin/python3.5 venv
     - . venv/bin/activate
     - python setup.py develop
-    - coverage run venv/bin/python -m unittest
+    - coverage run --source=afpfapfap -m unittest
     - coverage report
     
