@@ -68,7 +68,7 @@ class TestWhitespace(unittest.TestCase):
         clean_dir(self.path, execute=True)
 
         self.assertEqual(1,
-                         len(list(self.path.iterdir())),
+                         len(list(self.path.glob('**/*'))),
                          'no')
 
     def testDoubleTrailingWhitespaceRemovalOnEmptyDir(self):
@@ -93,7 +93,7 @@ class TestWhitespace(unittest.TestCase):
         clean_dir(self.path, execute=True)
 
         self.assertEqual(1,
-                         len(list(self.path.iterdir())),
+                         len(list(self.path.glob('**/*'))),
                          'no')
 
     def testMultipleLeadingWhitespaceRemoval(self):
@@ -211,10 +211,10 @@ class TestSlashes(unittest.TestCase):
         clean_dir(self.path, execute=True)
 
         self.assertEqual(1,
-                         len(list(self.path.iterdir())),
+                         len(list(self.path.glob('**/*'))),
                          'no')
 
-        self.assertEqual(set(self.path.iterdir()),
+        self.assertEqual(set(self.path.glob('**/*')),
                          set([self.path.joinpath('d_ir')]),
                          'no')
 
@@ -263,9 +263,9 @@ class TestDots(unittest.TestCase):
         clean_dir(self.path, execute=True)
 
         self.assertEqual(1,
-                         len(list(self.path.iterdir())),
+                         len(list(self.path.glob('**/*'))),
                          'no')
 
-        self.assertEqual(set(self.path.iterdir()),
+        self.assertEqual(set(self.path.glob('**/*')),
                          set([self.path.joinpath('d.ir')]),
                          'no')

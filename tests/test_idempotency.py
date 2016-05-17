@@ -64,11 +64,11 @@ class TestIdempotency(unittest.TestCase):
 
         clean_dir(self.path, execute=True)
         b = set(x.path for x
-                in self.path.iterdir())
+                in self.path.glob('**/*'))
 
         clean_dir(self.path, execute=True)
         c = set(x.path for x
-                in self.path.iterdir())
+                in self.path.glob('**/*'))
 
         self.assertNotEqual(a, b, 'no')
         self.assertEqual(b, c, 'no')
