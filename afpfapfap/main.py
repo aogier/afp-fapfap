@@ -17,10 +17,16 @@ class NukedFile(Exception):
     pass
 
 
-def cane():
+def cane(*args):
+    print('ciao', args)
     a = 0 / 0
 
 cleaners = ExtensionManager('fapfap.cleaners',
+                            propagate_map_exceptions=True,
+                            on_load_failure_callback=cane,
+                            invoke_on_load=True)
+
+removers = ExtensionManager('fapfap.removers',
                             propagate_map_exceptions=True,
                             on_load_failure_callback=cane,
                             invoke_on_load=True)
@@ -34,8 +40,14 @@ def clean_dir(path, execute=False):
                 log.debug('Recurse into: %s', entry)
                 clean_dir(entry, execute)
 
-            for cleaner in cleaners:
-                cleaner.obj.sanitize(entry, execute=execute)
+            for remover in removers:
+                try:
+                    remover.obj.sanitize(entry, execute=execute)
+                except NukedFile:
+                    break
+            else:
+                for cleaner in cleaners:
+                    cleaner.obj.sanitize(entry, execute=execute)
 
     except PermissionError as e:
         print('perm error:', e)
