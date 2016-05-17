@@ -10,6 +10,9 @@ import os
 import shutil
 from afpfapfap.main import clean_dir
 from pathlib import Path
+from afpfapfap import logging
+
+log = logging.get('tests')
 
 
 class TestWhitespace(unittest.TestCase):

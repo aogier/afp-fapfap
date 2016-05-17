@@ -11,6 +11,9 @@ import argparse
 import logging
 import pathlib
 from stevedore.extension import ExtensionManager
+from afpfapfap import logging
+
+log = logging.get('renamer')
 
 
 class NukedFile(Exception):
@@ -27,11 +30,11 @@ cleaners = ExtensionManager('fapfap.cleaners',
 
 
 def clean_dir(path, execute=False):
-    logging.warning('Entering dir: %s', path)
+    log.debug('Entering dir: %s', path)
     try:
         for entry in path.iterdir():
             if entry.is_dir():
-                logging.warning('Recurse into: %s', entry)
+                log.debug('Recurse into: %s', entry)
                 clean_dir(entry, execute)
 
             for cleaner in cleaners:

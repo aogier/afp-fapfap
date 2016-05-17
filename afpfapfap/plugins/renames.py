@@ -6,14 +6,16 @@ Created on 30/gen/2016
 import os
 import logging
 import pathlib
+from afpfapfap import logging
 
+log = logging.get('renamer')
 
 ADDED_SUFFIX = '_'
 
 
 class WhitespaceRemover(object):
 
-    log_sanitized = 'stripped {2}: \n"{0.path}"\n"{1.path}"'
+    log_sanitized = 'stripped {2}:\n\t"{0.path}"\n\t"{1.path}"'
 
     def sanitize(self, entry, suffix='', execute=False):
 
@@ -23,9 +25,9 @@ class WhitespaceRemover(object):
 
             sanitized_path = entry.parent.joinpath(stripped + suffix)
 
-            log = self.log_sanitized
+            log_sanitized = self.log_sanitized
             if not execute:
-                log = 'DRY RUN: %s' % log
+                log_sanitized = 'DRY RUN: %s' % log_sanitized
             else:
 
                 if (entry.is_symlink()
@@ -33,7 +35,7 @@ class WhitespaceRemover(object):
                         or entry.is_fifo()
                         or entry.is_block_device()
                         or entry.is_char_device()):
-                    logging.warn('special file {0.path} skipped'.format(entry))
+                    log.info('special file {0.path} skipped'.format(entry))
                     return entry
 
                 # directory rename
@@ -74,9 +76,9 @@ class WhitespaceRemover(object):
 
                 # rtfm ?
                 else:
-                    logging.critical(
+                    log.critical(
                         'File {0.path} is neither a special nor a dir/file !'.format(entry))
 
-            logging.warning(log.format(entry, sanitized_path, what))
+            log.info(log_sanitized.format(entry, sanitized_path, what))
 
             return sanitized_path

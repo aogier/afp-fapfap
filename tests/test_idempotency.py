@@ -10,6 +10,9 @@ from tempfile import mkdtemp, mkstemp
 import unittest
 from random import random
 from afpfapfap.main import clean_dir
+from afpfapfap import logging
+
+log = logging.get('tests')
 
 
 class TestIdempotency(unittest.TestCase):
@@ -36,7 +39,7 @@ class TestIdempotency(unittest.TestCase):
                     temp_child += ' '
                     os.mkdir(temp_child)
 
-                print ('made temp dir:', temp_child)
+                log.debug('made temp dir: %s', temp_child)
 
                 yield from self.populate(tempdir=temp_child,
                                          depth=depth - 1)
@@ -50,7 +53,7 @@ class TestIdempotency(unittest.TestCase):
                 temp_file += ' '
                 open(temp_file, 'w').close()
 
-            print('touched -%s-' % temp_file)
+            log.debug('touched -%s-', temp_file)
             yield temp_file
 
         return 1
