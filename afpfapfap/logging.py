@@ -3,7 +3,6 @@ Created on 17 mag 2016
 
 @author: oggei
 '''
-import logging
 import logging.config
 import os
 

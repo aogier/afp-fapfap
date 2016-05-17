@@ -4,9 +4,7 @@ Created on 28/gen/2016
 @author: oggei
 '''
 import unittest
-from pkg_resources import Requirement, resource_filename  # @UnresolvedImport
 from tempfile import mkdtemp
-import os
 import shutil
 from afpfapfap.main import clean_dir
 from pathlib import Path

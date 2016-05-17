@@ -4,8 +4,6 @@ Created on 30/gen/2016
 @author: oggei
 '''
 import os
-import logging
-import pathlib
 from afpfapfap import logging
 
 log = logging.get('renamer')

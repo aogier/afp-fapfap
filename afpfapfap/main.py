@@ -5,10 +5,7 @@ Created on 28/gen/2016
 @author: oggei
 '''
 
-
-import os
 import argparse
-import logging
 import pathlib
 from stevedore.extension import ExtensionManager
 from afpfapfap import logging
