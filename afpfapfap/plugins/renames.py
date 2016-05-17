@@ -13,17 +13,20 @@ log = logging.get('renamer')
 ADDED_SUFFIX = '_'
 
 
-class WhitespaceRemover(object):
+class Renamer(object):
 
-    log_sanitized = 'stripped {2}:\n\t"{0.path}"\n\t"{1.path}"'
+    log_sanitized = 'Renamed {2}:\n\t"{0.path}"\n\t"{1.path}"'
 
     def sanitize(self, entry, suffix='', execute=False):
 
-        stripped = entry.name.strip()
+        # strips out leading/trailing spaces
+        # :2e become a dot
+        # :2f become an underscore
+        renamed = entry.name.strip().replace(':2e', '.').replace(':2f', '_')
 
-        if stripped != entry.name:
+        if renamed != entry.name:
 
-            sanitized_path = entry.parent.joinpath(stripped + suffix)
+            sanitized_path = entry.parent.joinpath(renamed + suffix)
 
             log_sanitized = self.log_sanitized
             if not execute:

@@ -167,3 +167,107 @@ class TestWhitespace(unittest.TestCase):
                          set(self.path.joinpath(x).path
                              for x in ['dir', 'dir_', 'dir__']),
                          'no')
+
+
+class TestSlashes(unittest.TestCase):
+
+    def setUp(self):
+        super().setUp()
+        self.tempdir = mkdtemp()
+        self.path = Path(self.tempdir)
+
+    def tearDown(self):
+        super().tearDown()
+        shutil.rmtree(self.tempdir)
+
+    def testSlashRemoval(self):
+
+        self.path.joinpath('di:2fr').mkdir()
+
+        clean_dir(self.path, execute=True)
+
+        self.assertTrue(
+            self.path.joinpath('di_r').exists(),
+            'slash not removed: %s' % [x.path for x
+                                       in self.path.iterdir()])
+
+    def testDoubleSlashRemovalOnEmptyDir(self):
+        '''
+        We have a directory with multiple empty 
+        subdirectories whose name differs only for 
+        different leading whitespaces:
+
+         * base
+           * 'd:2fir'
+           * 'd:2fir '
+
+        Resulting tree must be:
+
+         * base
+           * d_ir
+        '''
+
+        for d in ['d:2fir', 'd:2fir ']:
+            self.path.joinpath(d).mkdir()
+
+        clean_dir(self.path, execute=True)
+
+        self.assertEqual(1,
+                         len(list(self.path.iterdir())),
+                         'no')
+
+        self.assertEqual(set(self.path.iterdir()),
+                         set([self.path.joinpath('d_ir')]),
+                         'no')
+
+
+class TestDots(unittest.TestCase):
+
+    def setUp(self):
+        super().setUp()
+        self.tempdir = mkdtemp()
+        self.path = Path(self.tempdir)
+
+    def tearDown(self):
+        super().tearDown()
+        shutil.rmtree(self.tempdir)
+
+    def testDotRemoval(self):
+
+        self.path.joinpath('di:2er').mkdir()
+
+        clean_dir(self.path, execute=True)
+
+        self.assertTrue(
+            self.path.joinpath('di.r').exists(),
+            'dot not removed: %s' % [x.path for x
+                                     in self.path.iterdir()])
+
+    def testDoubleDotRemovalOnEmptyDir(self):
+        '''
+        We have a directory with multiple empty 
+        subdirectories whose name differs only for 
+        different leading whitespaces:
+
+         * base
+           * 'd:2eir'
+           * 'd:2eir '
+
+        Resulting tree must be:
+
+         * base
+           * d.ir
+        '''
+
+        for d in ['d:2eir', 'd:2eir ']:
+            self.path.joinpath(d).mkdir()
+
+        clean_dir(self.path, execute=True)
+
+        self.assertEqual(1,
+                         len(list(self.path.iterdir())),
+                         'no')
+
+        self.assertEqual(set(self.path.iterdir()),
+                         set([self.path.joinpath('d.ir')]),
+                         'no')
