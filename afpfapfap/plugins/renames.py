@@ -13,7 +13,7 @@ ADDED_SUFFIX = '_'
 
 class Renamer(object):
 
-    log_sanitized = 'Renamed {2}:\n\t"{0.path}"\n\t"{1.path}"'
+    log_sanitized = 'Renamed :\n\t"{0.path}"\n\t"{1.path}"'
 
     def sanitize(self, entry, suffix='', execute=False):
 
@@ -41,7 +41,6 @@ class Renamer(object):
 
                 # directory rename
                 elif entry.is_dir():
-                    what = 'dir'
 
                     try:
                         # do the actual rename
@@ -57,7 +56,6 @@ class Renamer(object):
                             raise OSError(e)
 
                 elif entry.is_file():
-                    what = 'file'
 
                     try:
                         # link is atomic and fails if target already exists
@@ -80,6 +78,6 @@ class Renamer(object):
                     log.critical(
                         'File {0.path} is neither a special nor a dir/file !'.format(entry))
 
-            log.info(log_sanitized.format(entry, sanitized_path, what))
+            log.info(log_sanitized.format(entry, sanitized_path))
 
             return sanitized_path
