@@ -18,6 +18,6 @@ class Remover(object):
         if any(pattern.match(entry.name)
                for pattern
                in self.patterns):
-
-            entry.unlink()
+            if execute:
+                entry.unlink()
             raise NukedFile('{0.path} removed')
