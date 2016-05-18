@@ -6,7 +6,7 @@ Created on 30/gen/2016
 import os
 from afpfapfap import logging
 
-log = logging.get('renamer')
+log = logging.get('cleaner')
 
 ADDED_SUFFIX = '_'
 

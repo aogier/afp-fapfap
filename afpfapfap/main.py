@@ -10,7 +10,7 @@ import pathlib
 from stevedore.extension import ExtensionManager
 from afpfapfap import logging
 
-log = logging.get('renamer')
+log = logging.get('cleaner')
 
 
 class NukedFile(Exception):

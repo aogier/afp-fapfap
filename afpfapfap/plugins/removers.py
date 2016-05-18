@@ -5,6 +5,9 @@ Created on 17 mag 2016
 '''
 import re
 from afpfapfap.main import NukedFile
+from afpfapfap import logging
+
+log = logging.get('cleaner')
 
 
 class Remover(object):

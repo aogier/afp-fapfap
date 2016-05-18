@@ -27,7 +27,7 @@ LOGGING = {
             'handlers': ['null'],
             'level': 'DEBUG' if os.environ.get('DEBUG') else 'CRITICAL',
         },
-        'renamer': {
+        'cleaner': {
             'handlers': ['null'],
             'level': 'INFO'if os.environ.get('DEBUG') else 'CRITICAL',
         }
