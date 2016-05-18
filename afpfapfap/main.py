@@ -59,16 +59,13 @@ def run():
     parser.add_argument(
         '-d', '--debug', action='store_true', default=False, help='debug mode')
     parser.add_argument(
-        '-x', '--execute', action='store_true', default=False, dest='real', help='execute for real')
+        '-x', '--execute', action='store_true', default=False, dest='execute', help='execute for real')
 
     args = parser.parse_args()
 
     root_path = pathlib.Path(args.path)
 
-    for entry in clean_dir(root_path, execute=args['execute']):
-        print(entry.path)
-
-    print(args)
+    clean_dir(root_path, execute=args.execute)
 
 
 if __name__ == '__main__':
