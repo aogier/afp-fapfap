@@ -84,6 +84,9 @@ setup(
         'fapfap.cleaners': [
             'whitespace trimmer = afpfapfap.plugins.renames:Renamer',
         ],
+        'fapfap.removers': [
+            'ds_store remover = afpfapfap.plugins.removers:Remover',
+        ],
 
     },
 
