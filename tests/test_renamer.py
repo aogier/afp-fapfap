@@ -269,3 +269,39 @@ class TestDots(unittest.TestCase):
         self.assertEqual(set(self.path.glob('**/*')),
                          set([self.path.joinpath('d.ir')]),
                          'no')
+
+    def testDoubleDotRemoval(self):
+        '''
+        We have a directory with multiple empty 
+        subdirectories whose name differs only for 
+        different leading whitespaces:
+
+         * base
+           * ':2edir/file'
+           * '.dir /file'
+
+        Resulting tree must be:
+
+         * base
+           * .dir/file
+           * .dir_/file
+        '''
+
+        for d in [':2edir', '.dir']:
+            p = self.path.joinpath(d)
+            p.mkdir()
+            p.joinpath('file').touch()
+
+        clean_dir(self.path, execute=True)
+
+        self.assertEqual(4,
+                         len(list(self.path.glob('**/*'))),
+                         'no')
+
+        self.assertEqual(set(self.path.glob('**/*')),
+                         set([self.path.joinpath('.dir'),
+                              self.path.joinpath('.dir').joinpath('file'),
+                              self.path.joinpath('.dir_'),
+                              self.path.joinpath('.dir_').joinpath('file')
+                              ]),
+                         'no')

@@ -48,7 +48,9 @@ class Renamer(object):
                     except OSError as e:
                         # race condition: we tried to rename to an already
                         # existing, non-empty directory
-                        if e.errno is 39:
+
+                        # NFS returns 17 even with dirs ...
+                        if e.errno in (39, 17):
                             # retry with a different suffix
                             return self.sanitize(entry,
                                                  suffix + ADDED_SUFFIX, execute)
