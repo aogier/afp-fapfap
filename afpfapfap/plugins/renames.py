@@ -20,7 +20,7 @@ class Renamer(object):
         # strips out leading/trailing spaces
         # :2e become a dot
         # :2f become an underscore
-        renamed = entry.name.strip().replace(':2e', '.').replace(':2f', '_')
+        renamed = entry.name.strip().replace(':2e', '.').replace(':2f', '_').replace('::', ' ').replace(':', ' ')
 
         if renamed != entry.name:
 
