@@ -3,7 +3,7 @@ Created on 30/gen/2016
 
 @author: oggei
 '''
-import os
+import os, re
 from afpfapfap import logging
 
 log = logging.get('cleaner')
@@ -20,7 +20,11 @@ class Renamer(object):
         # strips out leading/trailing spaces
         # :2e become a dot
         # :2f become an underscore
-        renamed = entry.name.strip().replace(':2e', '.').replace(':2f', '_').replace('::', ' ').replace(':', ' ')
+        renamed = entry.name.strip().replace(':2e', '.').replace(':2f', '_').replace('::', ' ').replace(':', ' ').replace('\\', ' ').replace('?', ' ').replace('>', ' ').replace('<', ' ').replace('"', ' ').replace('*', ' ').replace('|', ' ')
+
+        a = re.match(r'(.*?)\.+$', renamed)
+        if a:
+            renamed = a.group(1)
 
         if renamed != entry.name:
 
