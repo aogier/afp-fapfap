@@ -31,8 +31,8 @@ class TestMain(unittest.TestCase):
             path.mkdir()
             path.joinpath(':2eDS_Store').touch()
 
-        before = set(x.path for x in self.path.glob('**/*'))
+        before = set(x for x in self.path.glob('**/*'))
         clean_dir(self.path, execute=False)
-        after = set(x.path for x in self.path.glob('**/*'))
+        after = set(x for x in self.path.glob('**/*'))
 
         self.assertEqual(before, after, 'no')

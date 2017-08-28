@@ -35,7 +35,7 @@ class TestRemover(unittest.TestCase):
 
         self.assertEqual(set(self.path.glob('**/*')),
                          set([self.path.joinpath('dir')]),
-                         'files not removed: %s' % [x.path for x
+                         'files not removed: %s' % [x for x
                                                     in self.path.iterdir()])
 
 #     def testTrailingWhitespaceRemoval(self):

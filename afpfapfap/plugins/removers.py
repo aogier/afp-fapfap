@@ -23,4 +23,4 @@ class Remover(object):
                in self.patterns):
             if execute:
                 entry.unlink()
-            raise NukedFile('{0.path} removed')
+            raise NukedFile('{0} removed')

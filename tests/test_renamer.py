@@ -32,7 +32,7 @@ class TestWhitespace(unittest.TestCase):
 
         self.assertTrue(
             self.path.joinpath('dir').exists(),
-            'leading space not removed: %s' % [x.path for x
+            'leading space not removed: %s' % [x for x
                                                in self.path.iterdir()])
 
     def testTrailingWhitespaceRemoval(self):
@@ -43,7 +43,7 @@ class TestWhitespace(unittest.TestCase):
 
         self.assertTrue(
             self.path.joinpath('dir').exists(),
-            'trailing space not removed: %s' % [x.path for x
+            'trailing space not removed: %s' % [x for x
                                                 in self.path.iterdir()])
 
     def testDoubleLeadingWhitespaceRemovalOnEmptyDir(self):
@@ -126,8 +126,8 @@ class TestWhitespace(unittest.TestCase):
                          len(list(self.path.iterdir())),
                          'no')
 
-        self.assertEqual(set(x.path for x in self.path.iterdir()),
-                         set(self.path.joinpath(x).path
+        self.assertEqual(set(x for x in self.path.iterdir()),
+                         set(self.path.joinpath(x)
                              for x in ['dir', 'dir_', 'dir__']),
                          'no')
 
@@ -161,8 +161,8 @@ class TestWhitespace(unittest.TestCase):
                          len(list(self.path.iterdir())),
                          'no')
 
-        self.assertEqual(set(x.path for x in self.path.iterdir()),
-                         set(self.path.joinpath(x).path
+        self.assertEqual(set(x for x in self.path.iterdir()),
+                         set(self.path.joinpath(x)
                              for x in ['dir', 'dir_', 'dir__']),
                          'no')
 
@@ -186,7 +186,7 @@ class TestSlashes(unittest.TestCase):
 
         self.assertTrue(
             self.path.joinpath('di_r').exists(),
-            'slash not removed: %s' % [x.path for x
+            'slash not removed: %s' % [x for x
                                        in self.path.iterdir()])
 
     def testDoubleSlashRemovalOnEmptyDir(self):
@@ -238,7 +238,7 @@ class TestDots(unittest.TestCase):
 
         self.assertTrue(
             self.path.joinpath('di.r').exists(),
-            'dot not removed: %s' % [x.path for x
+            'dot not removed: %s' % [x for x
                                      in self.path.iterdir()])
 
     def testDoubleDotRemovalOnEmptyDir(self):

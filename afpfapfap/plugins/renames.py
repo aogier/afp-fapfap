@@ -13,7 +13,7 @@ ADDED_SUFFIX = '_'
 
 class Renamer(object):
 
-    log_sanitized = 'Renamed :\n\t"{0.path}"\n\t"{1.path}"'
+    log_sanitized = 'Renamed :\n\t"{0}"\n\t"{1}"'
 
     def sanitize(self, entry, suffix='', execute=False):
 
@@ -65,7 +65,7 @@ class Renamer(object):
 
                     try:
                         # link is atomic and fails if target already exists
-                        os.link(entry.path, sanitized_path.path)
+                        os.link(str(entry), str(sanitized_path))
                     except FileExistsError as e:
                         # race condition: we tried to create an already
                         # existing dir/file
