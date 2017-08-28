@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/aogier/afp-fapfap.svg?branch=master)](https://travis-ci.org/aogier/afp-fapfap)
+[![Coverage Status](https://coveralls.io/repos/github/aogier/afp-fapfap/badge.svg?branch=master)](https://coveralls.io/github/aogier/afp-fapfap?branch=master)
+
 # AFP FAP FAP
 last: 20160518
 
