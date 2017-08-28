@@ -12,8 +12,7 @@ dependency_links = [
 ]
 
 if os.environ.get('DEBUG'):
-    install_requires += ['ipython==4.0.3',
-                         'coverage==3.7.1',
+    install_requires += ['coverage==3.7.1',
                          ]
 
 packages, package_data = [], {}

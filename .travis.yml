@@ -1,0 +1,13 @@
+language: python
+env:
+ - DEBUG=1
+python:
+  - "3.2"
+  - "3.3"
+  - "3.4"
+  - "3.5"
+  - "3.6"
+install: python setup.py develop
+script:
+ - coverage run --source=afpfapfap -m unittest
+ - coverage report
